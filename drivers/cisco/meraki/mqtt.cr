@@ -361,7 +361,7 @@ class Cisco::Meraki::MQTT < PlaceOS::Driver
     return [] of Nil if location.presence && location != "desk"
 
     serials = @zone_lookup[zone_id]?
-    return [] of Nil unless serials && !serials.empty?
+    return [] of Nil if serials.nil? || serials.empty?
 
     serials.compact_map { |serial|
       desks = @desk_mappings[serial]?

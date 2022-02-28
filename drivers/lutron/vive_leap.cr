@@ -158,18 +158,18 @@ class Lutron::ViveLeap < PlaceOS::Driver
       statuses = MultipleAreaStatus.from_json request.body
       timestamp = Time.utc.to_unix
 
-      statuses.states.each do |status|
-        base_key = status.status_key
-        self["#{base_key}_level"] = status.level if status.level
+      statuses.states.each do |area_status|
+        base_key = area_status.status_key
+        self["#{base_key}_level"] = area_status.level if area_status.level
 
-        if status.occupancy
-          self["#{base_key}_occupied"] = status.occupancy
-          @sensors[base_key] = {status.occupancy.try(&.occupied?) || false, timestamp}
+        if area_status.occupancy
+          self["#{base_key}_occupied"] = area_status.occupancy
+          @sensors[base_key] = {area_status.occupancy.try(&.occupied?) || false, timestamp}
         end
       end
     when "MultipleZoneStatus"
       statuses = MultipleZoneStatus.from_json request.body
-      statuses.states.each { |status| set_zone(status) }
+      statuses.states.each { |zone_status| set_zone(zone_status) }
     when "OneZoneStatus"
       set_zone(OneZoneStatus.from_json(request.body).status)
     when "ExceptionDetail"

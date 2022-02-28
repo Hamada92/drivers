@@ -68,9 +68,9 @@ class Place::Router::SignalGraph
         func = Edge::Func::Mute.new true
         g[output.id, Mute.id] = Edge::Active.new mod, func
       else
-        outputs.each do |output|
-          func = Edge::Func::Mute.new true, output.output
-          g[output.id, Mute.id] = Edge::Active.new mod, func
+        outputs.each do |existing_output|
+          func = Edge::Func::Mute.new true, existing_output.output
+          g[existing_output.id, Mute.id] = Edge::Active.new mod, func
         end
       end
     end
