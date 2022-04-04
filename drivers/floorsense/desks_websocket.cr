@@ -223,6 +223,10 @@ class Floorsense::DesksWebsocket < PlaceOS::Driver
 
   def lockers(controller_id : String | Int32)
     response = get("/restapi/locker-list?cid=#{controller_id}", headers: default_headers)
+    if !response.success?
+      return [] of LockerInfo
+    end
+
     parse response, Array(LockerInfo)
   end
 
